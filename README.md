@@ -4,7 +4,7 @@
 
 # pixture
 
-[![ci_badge](https://github.com/royfrancis/pixture/workflows/r-cmd-check/badge.svg)](https://github.com/royfrancis/pixture/actions?workflow=r-cmd-check) [![codecov](https://codecov.io/gh/royfrancis/pixture/branch/main/graph/badge.svg?token=4DOQ8HNQFK)](https://app.codecov.io/gh/royfrancis/pixture/) [![r-universe status](https://royfrancis.r-universe.dev/pixture/badges/checks)](https://royfrancis.r-universe.dev/pixture) [![r-universe version](https://royfrancis.r-universe.dev/pixture/badges/version)](https://royfrancis.r-universe.dev/pixture) 
+[![r-cmd-check](https://github.com/royfrancis/pixture/workflows/r-cmd-check/badge.svg)](https://github.com/royfrancis/pixture/actions?workflow=r-cmd-check) [![docs](https://github.com/royfrancis/pixture/workflows/docs/badge.svg)](https://github.com/royfrancis/pixture/actions?workflow=docs) [![codecov](https://codecov.io/gh/royfrancis/pixture/branch/main/graph/badge.svg?token=4DOQ8HNQFK)](https://app.codecov.io/gh/royfrancis/pixture/) [![r-universe status](https://royfrancis.r-universe.dev/pixture/badges/checks)](https://royfrancis.r-universe.dev/pixture) [![r-universe version](https://royfrancis.r-universe.dev/pixture/badges/version)](https://royfrancis.r-universe.dev/pixture) 
 
 `pixture` is an R package designed to create HTML image galleries. The galleries can be standalone, included in an Rmarkdown/Quarto document or incorporated into a Shiny app. 
 
