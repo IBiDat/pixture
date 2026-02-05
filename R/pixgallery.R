@@ -14,6 +14,7 @@
 #' @param border_radius A character denoting corner radius of image thumbnails in valid CSS units.
 #' @param layout A character denoting gallery layout type. Options are "grid", "fixed", "mosaic", "masonry", "justified", "scroll", "elastic", "rhombus" or "hexagon". See details.
 #' @param shuffle A logical indicating whether images are randomly shuffled.
+#' @param limit A numeric indicating the maximum number of images to show.
 #' @param lightbox A list of options to customize the lightbox. See details.
 #' @param height A character denoting height of the widget in valid CSS units.
 #' @param width A character denoting width of the widget in valid CSS units.
@@ -33,7 +34,7 @@
 #' \strong{hexagon}: Hexagon shaped layout. When using \code{caption_valign} options 'top', 'bottom' or 'center', long captions are clipped. Option 'below' is disabled. \cr
 #' \cr
 #' \strong{lightbox options}\cr
-#' The lightbox can be customized by passing a list of options to the \code{lightbox} parameter. Here is an example; \cr 
+#' The lightbox can be customized by passing a list of options to the \code{lightbox} parameter. Here is an example; \cr
 #' ```
 #' pixgallery(
 #'  paths,
@@ -80,6 +81,7 @@ pixgallery <- function(
   border_radius = "0px",
   layout = "grid",
   shuffle = FALSE,
+  limit = NULL,
   lightbox = list(),
   width = "100%",
   height = "100%",
@@ -184,6 +186,11 @@ pixgallery <- function(
     stop("Parameter 'shuffle' must be a logical. TRUE or FALSE.")
   }
 
+  # check limit
+  if (!(is.null(limit) || (is.numeric(limit) && limit > 0))) {
+    stop("Parameter 'limit' must be positive or NULL.")
+  }
+
   # lightbox options
   # default list if user doesn't provide anything
   lightbox_defaults <- list(
@@ -206,6 +213,7 @@ pixgallery <- function(
     border_radius = border_radius,
     layout = layout,
     shuffle = shuffle,
+    limit = limit,
     lightbox = lightbox
   )
 

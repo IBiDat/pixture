@@ -18,44 +18,54 @@ HTMLWidgets.widget({
   }
 });
 
-function shuffle(path, caption, link, caption_lightbox) {
-  var index = path.length;
+function shuffle(x) {
+  var index = x.path.length;
   var rnd, tmp1, tmp2, tmp3, tmp4;
-  
+
   // Determine which arrays need shuffling
-  var shuffleCaption = caption !== null && caption.length === path.length;
-  var shuffleLink = link !== null && link.length === path.length;
-  var shuffleCaptionLightbox = caption_lightbox !== null && caption_lightbox.length === path.length;
+  var shuffleCaption = x.caption !== null && x.caption.length === x.path.length;
+  var shuffleLink = x.link !== null && x.link.length === x.path.length;
+  var shuffleCaptionLightbox = x.caption_lightbox !== null && x.caption_lightbox.length === x.path.length;
 
   while (index) {
     rnd = Math.floor(Math.random() * index);
     index -= 1;
-    
+
     // Always shuffle path
-    tmp1 = path[index];
-    path[index] = path[rnd];
-    path[rnd] = tmp1;
-    
+    tmp1 = x.path[index];
+    x.path[index] = x.path[rnd];
+    x.path[rnd] = tmp1;
+
     // Shuffle caption if it's an array of same length
     if (shuffleCaption) {
-      tmp2 = caption[index];
-      caption[index] = caption[rnd];
-      caption[rnd] = tmp2;
+      tmp2 = x.caption[index];
+      x.caption[index] = x.caption[rnd];
+      x.caption[rnd] = tmp2;
     }
-    
+
     // Shuffle link if it's an array of same length
     if (shuffleLink) {
-      tmp3 = link[index];
-      link[index] = link[rnd];
-      link[rnd] = tmp3;
+      tmp3 = x.link[index];
+      x.link[index] = x.link[rnd];
+      x.link[rnd] = tmp3;
     }
-    
+
     // Shuffle caption_lightbox if it's an array of same length
     if (shuffleCaptionLightbox) {
-      tmp4 = caption_lightbox[index];
-      caption_lightbox[index] = caption_lightbox[rnd];
-      caption_lightbox[rnd] = tmp4;
+      tmp4 = x.caption_lightbox[index];
+      x.caption_lightbox[index] = x.caption_lightbox[rnd];
+      x.caption_lightbox[rnd] = tmp4;
     }
+  }
+
+  if (x.limit !== null && x.limit < x.path.length) {
+    x.path = x.path.slice(0, x.limit);
+    if (shuffleCaption)
+      x.caption = x.caption.slice(0, x.limit);
+    if (shuffleLink)
+      x.link = x.link.slice(0, x.limit);
+    if (shuffleCaptionLightbox)
+      x.caption_lightbox = x.caption_lightbox.slice(0, x.limit);
   }
 }
 
@@ -88,7 +98,7 @@ function getGridCaptionAlign(x) {
 }
 
 function pixgallery_base(el,x){
-  if(x.shuffle) shuffle(x.path, x.caption, x.link, x.caption_lightbox);
+  if(x.shuffle) shuffle(x);
   if(x.layout === "grid") {
     var fixed = false;
     pixgallery_grid(el,x,fixed);
@@ -154,7 +164,7 @@ function pixgallery_grid(el,x,fixed){
       } else {
         var temp = '<div class="pixgallery-child pixgallery-grid-child pixgallery-grid-child-below" id="pixgallery-{id}" style="grid-template-rows:{h} 1fr;"><a href="{url}" class="glightbox" data-gallery="{id}" data-description="{caption2}"><img class="pixgallery-grid-image pixgallery-grid-image-below" style="border-radius:{borderRadius} {borderRadius} 0 0;height:{h};" src="{src}"></a><div class="pixgallery-caption pixgallery-caption-below" style="border-radius:0 0 {borderRadius} {borderRadius};text-align:{captionHalign};">{caption}</div></div>';
       }
-      
+
     } else if(captionValign == "top") {
 
       if(fixed) {
@@ -162,7 +172,7 @@ function pixgallery_grid(el,x,fixed){
       } else {
         var temp = '<div class="pixgallery-child pixgallery-grid-child pixgallery-child-over" id="pixgallery-{id}"><a href="{url}" class="glightbox" data-gallery="{id}" data-description="{caption2}"><img class="pixgallery-grid-image pixgallery-grid-image-over" style="border-radius:{borderRadius};height:100%;" src="{src}"></a><div class="pixgallery-caption pixgallery-caption-top" style="border-radius:{borderRadius};text-align:{captionHalign};">{caption}</div></div>';
       }
-      
+
     } else if(captionValign == "center") {
 
       if(fixed) {
@@ -274,11 +284,11 @@ function pixgallery_mosaic(el,x){
 
     var temp = '<div class="pixgallery-child pixgallery-mosaic-child pixgallery-mosaic-child pixgallery-mosaic-child-below" id="pixgallery-{id}"><a href="{url}" class="glightbox" data-gallery="{id}" data-description="{caption2}"><img class="pixgallery-mosaic-image" style="border-radius:{borderRadius} {borderRadius} 0 0;" src="{src}"></a><div class="pixgallery-caption pixgallery-caption-below" style="border-radius:0 0 {borderRadius} {borderRadius};text-align:{captionHalign};">{caption}</div></div>';
 
-      
+
     } else if(captionValign == "top") {
 
     var temp = '<div class="pixgallery-child pixgallery-mosaic-child pixgallery-mosaic-child pixgallery-child-over" id="pixgallery-{id}"><a href="{url}" class="glightbox" data-gallery="{id}" data-description="{caption2}"><img class="pixgallery-mosaic-image" style="border-radius:{borderRadius};" src="{src}"></a><div class="pixgallery-caption pixgallery-caption-top" style="border-radius:{borderRadius};text-align:{captionHalign};">{caption}</div></div>';
-      
+
     } else if(captionValign == "center") {
 
     var temp = '<div class="pixgallery-child pixgallery-mosaic-child pixgallery-mosaic-child pixgallery-child-over" id="pixgallery-{id}"><a href="{url}" class="glightbox" data-gallery="{id}" data-description="{caption2}"><img class="pixgallery-mosaic-image" style="border-radius:{borderRadius};" src="{src}"></a><div class="pixgallery-caption pixgallery-caption-center" style="border-radius:{borderRadius};text-align:{captionHalign};">{caption}</div></div>';
@@ -421,7 +431,7 @@ function pixgallery_masonry(el,x){
   }
 
 	document.getElementById(el.id).innerHTML = '<div class="pixgallery-gallery pixgallery-masonry" style="column-gap:' + gap + ';column-width:' + w + ';">' + newValues + '</div>';
-  
+
   if(link[0] === true) {
     var lightbox_options = Object.assign(x.lightbox || {});
     var lightbox = GLightbox(lightbox_options);
@@ -484,7 +494,7 @@ function pixgallery_justified(el,x){
       var temp = '<div class="pixgallery-child pixgallery-justified-over-child" id="pixgallery-{id}"><a href="{url}" class="glightbox" data-gallery="{id}" data-description="{caption2}" style="height:{h};"><img class="pixgallery-justified-over-image" style="border-radius:{borderRadius};" src="{src}"></a><div class="pixgallery-caption pixgallery-justified-caption-bottom" style="border-radius:{borderRadius};text-align:{captionHalign};">{caption}</div></div>';
     }
   }
-  
+
   var newValues = '', limitItem = src.length;
   for (let i = 0; i < limitItem; ++i) {
 
@@ -516,7 +526,7 @@ function pixgallery_justified(el,x){
   }
 
 	document.getElementById(el.id).innerHTML = '<div class="pixgallery-gallery pixgallery-justified" style="gap:' + gap + ';">' + newValues + '</div>';
-  
+
   if(link[0] === true) {
     var lightbox_options = Object.assign(x.lightbox || {});
     var lightbox = GLightbox(lightbox_options);
@@ -554,7 +564,7 @@ function pixgallery_elastic(el,x){
   } else {
     var temp = '<div class="pixgallery-child pixgallery-elastic-child" id="pixgallery-{id}"><a href="{url}" class="glightbox" data-gallery="{id}" data-description="{caption2}"><img class="pixgallery-elastic-image" style="border-radius:{borderRadius};" src="{src}"></a></div>';
   }
-  
+
   var newValues = '', limitItem = src.length;
   for (let i = 0; i < limitItem; ++i) {
 
@@ -586,7 +596,7 @@ function pixgallery_elastic(el,x){
   }
 
 	document.getElementById(el.id).innerHTML = '<div class="pixgallery-gallery pixgallery-elastic" style="height:' + h + ';gap:' + gap + ';">' + newValues + '</div>';
-  
+
   if(link[0] === true) {
     var lightbox_options = Object.assign(x.lightbox || {});
     var lightbox = GLightbox(lightbox_options);
@@ -598,7 +608,7 @@ function pixgallery_elastic(el,x){
 function createRoundedRhombus(size, radius) {
   /* Parse size (assume pixels if no unit provided) */
   const sizeValue = typeof size === 'number' ? size : parseFloat(size);
-  
+
   /* Parse radius and convert to pixels relative to size */
   let radiusValue;
   if (typeof radius === 'number') {
@@ -608,7 +618,7 @@ function createRoundedRhombus(size, radius) {
     if (match) {
       const value = parseFloat(match[1]);
       const unit = match[2] || 'px';
-      
+
       /* Convert different units to pixels relative to size */
       switch(unit) {
         case 'px':
@@ -626,12 +636,12 @@ function createRoundedRhombus(size, radius) {
       }
     }
   }
-  
+
   const width = sizeValue;
   const height = sizeValue;
   const cx = width / 2;
   const cy = height / 2;
-  
+
   /* The 4 corner points of the rhombus (diamond) */
   const points = [
     { x: cx, y: 0 },
@@ -639,54 +649,54 @@ function createRoundedRhombus(size, radius) {
     { x: cx, y: height },
     { x: 0, y: cy }
   ];
-  
+
   /* Calculate the distance to offset from each corner along the edges for rounding */
   /* For a rhombus, each edge has the same length */
   const edgeLength = Math.sqrt(Math.pow(cx, 2) + Math.pow(cy, 2));
   const offset = radiusValue / edgeLength;
-  
+
   let path = '';
-  
+
   for (let i = 0; i < points.length; i++) {
     const current = points[i];
     const next = points[(i + 1) % points.length];
     const prev = points[(i - 1 + points.length) % points.length];
-    
+
     /* Vector from current to next */
     const dx1 = next.x - current.x;
     const dy1 = next.y - current.y;
     const len1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
-    
+
     /* Vector from current to previous */
     const dx2 = prev.x - current.x;
     const dy2 = prev.y - current.y;
     const len2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-    
+
     /* Normalized vectors */
     const nx1 = dx1 / len1;
     const ny1 = dy1 / len1;
     const nx2 = dx2 / len2;
     const ny2 = dy2 / len2;
-    
+
     /* Points offset from the corner */
     const p1 = {
       x: current.x + nx2 * radiusValue,
       y: current.y + ny2 * radiusValue
     };
-    
+
     const p2 = {
       x: current.x + nx1 * radiusValue,
       y: current.y + ny1 * radiusValue
     };
-    
+
     /* Start with the first point */
     if (i === 0) {
       path += `M ${p1.x} ${p1.y} `;
     }
-    
+
     /* Quadratic curve around the corner */
     path += `Q ${current.x} ${current.y} ${p2.x} ${p2.y} `;
-    
+
     /* Line to the next corner's offset point */
     const nextCurrent = next;
     const nextNext = points[(i + 2) % points.length];
@@ -695,17 +705,17 @@ function createRoundedRhombus(size, radius) {
     const len3 = Math.sqrt(dx3 * dx3 + dy3 * dy3);
     const nx3 = dx3 / len3;
     const ny3 = dy3 / len3;
-    
+
     const nextP1 = {
       x: nextCurrent.x - nx1 * radiusValue,
       y: nextCurrent.y - ny1 * radiusValue
     };
-    
+
     path += `L ${nextP1.x} ${nextP1.y} `;
   }
-  
+
   path += 'Z';
-  
+
   return `path('${path}')`;
 }
 
@@ -715,27 +725,27 @@ function initRhombusGallery(id, s = null, m = null, borderRadius = null) {
   const gallerySelector = `${id} .pixgallery-rhombus`;
   const containerSelector = `${id} .pixgallery-rhombus-container`;
   const childSelector = `${id} .pixgallery-rhombus-child`;
-  
+
   /* Get elements */
   const gallery = document.querySelector(gallerySelector);
   const container = document.querySelector(containerSelector);
   const children = document.querySelectorAll(childSelector);
   const outerEl = document.querySelector(id);
-  
+
   if (!gallery || !container || children.length === 0) {
     console.error(`Gallery elements not found for id: ${id}`);
     return;
   }
-  
+
   /* Function to normalize CSS values with default */
   function normalizeCSSValue(value, defaultValue) {
     if (value == null) return defaultValue;
-    
+
     /* If it's a number, add 'px' */
     if (typeof value === 'number' && !isNaN(value)) {
       return `${value}px`;
     }
-    
+
     /* If it's a string, validate it's a valid CSS length unit */
     if (typeof value === 'string') {
       const trimmed = value.trim();
@@ -749,15 +759,15 @@ function initRhombusGallery(id, s = null, m = null, borderRadius = null) {
         return `${num}px`;
       }
     }
-    
+
     return defaultValue;
   }
-  
+
   /* Determine final values for s, m, and borderRadius with defaults */
   const finalS = normalizeCSSValue(s, '150px');
   const finalM = normalizeCSSValue(m, '4px');
   const finalBorderRadius = normalizeCSSValue(borderRadius, '0px');
-  
+
   /* Parse numeric values for calculations (assume px if no unit for calculations) */
   const sNumeric = parseFloat(finalS);
   const mNumeric = parseFloat(finalM);
@@ -770,7 +780,7 @@ function initRhombusGallery(id, s = null, m = null, borderRadius = null) {
     child.style.height = finalS;
     child.style.margin = finalM;
     child.style.marginBottom = `calc(${finalM} - ${finalS} * 0.5)`;
-    
+
     /* Apply clip-path for rhombus shape */
     child.style.clipPath = createRoundedRhombus(finalS, finalBorderRadius);
     /* child.style.clipPath = 'polygon(50% 0, 100% 50%, 50% 100%, 0 50%)'; */
@@ -779,7 +789,7 @@ function initRhombusGallery(id, s = null, m = null, borderRadius = null) {
     if (captionDiv) {
       captionDiv.style.clipPath = createRoundedRhombus(finalS, finalBorderRadius);
     }
-    
+
     /* Find the anchor element */
     const anchor = child.querySelector('a');
     if (anchor) {
@@ -790,23 +800,23 @@ function initRhombusGallery(id, s = null, m = null, borderRadius = null) {
       anchor.style.borderRadius = finalBorderRadius;
     }
   });
-  
+
   /* Add clearfix element at the end of container */
   const clearfix = document.createElement('div');
   clearfix.style.clear = 'both';
   clearfix.style.height = '0';
   container.appendChild(clearfix);
-  
+
   /* Apply container::before pseudo-element properties via a style element */
   const styleId = `rhombus-gallery-dynamic-styles-${id.replace(/[^a-zA-Z0-9]/g, '_')}`;
   let styleEl = document.getElementById(styleId);
-  
+
   if (!styleEl) {
     styleEl = document.createElement('style');
     styleEl.id = styleId;
     document.head.appendChild(styleEl);
   }
-  
+
   styleEl.textContent = `
     ${containerSelector} {
       overflow: hidden;
@@ -834,7 +844,7 @@ function initRhombusGallery(id, s = null, m = null, borderRadius = null) {
       overflow: visible;
     }
   `;
-  
+
   /* Function to calculate and update height */
   function updateHeight() {
     /* Find the last child's position */
@@ -842,33 +852,33 @@ function initRhombusGallery(id, s = null, m = null, borderRadius = null) {
     if (lastChild) {
       const lastRect = lastChild.getBoundingClientRect();
       const containerRect = container.getBoundingClientRect();
-      
+
       /* The bottom of the last element relative to container top */
       /* Add back the negative margin since it's visually extending beyond */
       const actualBottom = lastRect.bottom - containerRect.top + (sNumeric * 0.5 - mNumeric);
-      
+
       container.style.minHeight = `${actualBottom}px`;
-      
+
       if (outerEl) {
         outerEl.style.setProperty('height', `${actualBottom + 20}px`, 'important');
         outerEl.style.setProperty('overflow', 'visible', 'important');
       }
     }
   }
-  
+
   /* Initial height calculation */
   setTimeout(updateHeight, 100);
-  
+
   /* Debounce function to limit resize calls */
   let resizeTimeout;
   function handleResize() {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(updateHeight, 150);
   }
-  
+
   /* Add resize event listener */
   window.addEventListener('resize', handleResize);
-  
+
   /* Store cleanup function on the gallery element for potential cleanup later */
   gallery._rhombusCleanup = () => {
     window.removeEventListener('resize', handleResize);
@@ -927,7 +937,7 @@ function pixgallery_rhombus(el,x){
 
     }
   }
-  
+
   var newValues = '', limitItem = src.length;
   for (let i = 0; i < limitItem; ++i) {
 
@@ -959,7 +969,7 @@ function pixgallery_rhombus(el,x){
   }
 
   document.getElementById(el.id).innerHTML = '<div class="pixgallery-gallery pixgallery-rhombus"><div class="pixgallery-rhombus-container">' + newValues + '</div></div>';
-  
+
   if(link[0] === true) {
     var lightbox_options = Object.assign(x.lightbox || {});
     var lightbox = GLightbox(lightbox_options);
@@ -979,7 +989,7 @@ function pixgallery_rhombus(el,x){
 function createRoundedHexagon(size, radius) {
   /* Parse size (assume pixels if no unit provided) */
   const sizeValue = typeof size === 'number' ? size : parseFloat(size);
-  
+
   /* Parse radius and convert to pixels relative to size */
   let radiusValue;
   if (typeof radius === 'number') {
@@ -989,7 +999,7 @@ function createRoundedHexagon(size, radius) {
     if (match) {
       const value = parseFloat(match[1]);
       const unit = match[2] || 'px';
-      
+
       /* Convert different units to pixels relative to size */
       switch(unit) {
         case 'px':
@@ -1007,11 +1017,11 @@ function createRoundedHexagon(size, radius) {
       }
     }
   }
-  
+
   const width = sizeValue;
   const height = sizeValue * 1.1547;
   const cx = width / 2;
-  
+
   /* The 6 corner points of the hexagon */
   const points = [
     { x: cx, y: 0 },
@@ -1021,49 +1031,49 @@ function createRoundedHexagon(size, radius) {
     { x: 0, y: height * 0.75 },
     { x: 0, y: height * 0.25 }
   ];
-  
+
   let path = '';
-  
+
   for (let i = 0; i < points.length; i++) {
     const current = points[i];
     const next = points[(i + 1) % points.length];
     const prev = points[(i - 1 + points.length) % points.length];
-    
+
     /* Vector from current to next */
     const dx1 = next.x - current.x;
     const dy1 = next.y - current.y;
     const len1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
-    
+
     /* Vector from current to previous */
     const dx2 = prev.x - current.x;
     const dy2 = prev.y - current.y;
     const len2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-    
+
     /* Normalized vectors */
     const nx1 = dx1 / len1;
     const ny1 = dy1 / len1;
     const nx2 = dx2 / len2;
     const ny2 = dy2 / len2;
-    
+
     /* Points offset from the corner */
     const p1 = {
       x: current.x + nx2 * radiusValue,
       y: current.y + ny2 * radiusValue
     };
-    
+
     const p2 = {
       x: current.x + nx1 * radiusValue,
       y: current.y + ny1 * radiusValue
     };
-    
+
     /* Start with the first point */
     if (i === 0) {
       path += `M ${p1.x} ${p1.y} `;
     }
-    
+
     /* Quadratic curve around the corner */
     path += `Q ${current.x} ${current.y} ${p2.x} ${p2.y} `;
-    
+
     /* Line to the next corner's offset point */
     const nextCurrent = next;
     const nextNext = points[(i + 2) % points.length];
@@ -1072,17 +1082,17 @@ function createRoundedHexagon(size, radius) {
     const len3 = Math.sqrt(dx3 * dx3 + dy3 * dy3);
     const nx3 = dx3 / len3;
     const ny3 = dy3 / len3;
-    
+
     const nextP1 = {
       x: nextCurrent.x - nx1 * radiusValue,
       y: nextCurrent.y - ny1 * radiusValue
     };
-    
+
     path += `L ${nextP1.x} ${nextP1.y} `;
   }
-  
+
   path += 'Z';
-  
+
   return `path('${path}')`;
 }
 
@@ -1092,27 +1102,27 @@ function initHexagonGallery(id, s = null, m = null, borderRadius = null) {
   const gallerySelector = `${id} .pixgallery-hexagon`;
   const containerSelector = `${id} .pixgallery-hexagon-container`;
   const childSelector = `${id} .pixgallery-hexagon-child`;
-  
+
   /* Get elements */
   const gallery = document.querySelector(gallerySelector);
   const container = document.querySelector(containerSelector);
   const children = document.querySelectorAll(childSelector);
   const outerEl = document.querySelector(id);
-  
+
   if (!gallery || !container || children.length === 0) {
     console.error(`Gallery elements not found for id: ${id}`);
     return;
   }
-  
+
   /* Function to normalize CSS values */
   function normalizeCSSValue(value, defaultValue) {
     if (value == null) return defaultValue;
-    
+
     /* If it's a number, add 'px' */
     if (typeof value === 'number' && !isNaN(value)) {
       return `${value}px`;
     }
-    
+
     /* If it's a string, validate it's a valid CSS length */
     if (typeof value === 'string') {
       const trimmed = value.trim();
@@ -1126,15 +1136,15 @@ function initHexagonGallery(id, s = null, m = null, borderRadius = null) {
         return `${num}px`;
       }
     }
-    
+
     return defaultValue;
   }
-  
+
   /* Determine final values for s, m, and borderRadius with defaults */
   const finalS = normalizeCSSValue(s, '150px');
   const finalM = normalizeCSSValue(m, '4px');
   const finalBorderRadius = normalizeCSSValue(borderRadius, '0px');
-  
+
   /* Parse numeric values for calculations (assume px if no unit for calculations) */
   const sNumeric = parseFloat(finalS);
   const mNumeric = parseFloat(finalM);
@@ -1147,14 +1157,14 @@ function initHexagonGallery(id, s = null, m = null, borderRadius = null) {
     child.style.height = `calc(${finalS} * 1.1547)`;
     child.style.margin = finalM;
     child.style.marginBottom = `calc(${finalM} - ${finalS} * 0.2885)`;
-    
+
     /* Apply clip-path for hexagon shape */
     if (borderRadius && parseFloat(finalBorderRadius) > 0) {
       child.style.clipPath = createRoundedHexagon(finalS, finalBorderRadius);
     } else {
       child.style.clipPath = 'polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%)';
     }
-    
+
     /* Apply clip-path for caption */
     const captionDiv = child.querySelector('.pixgallery-caption');
     if (captionDiv) {
@@ -1164,7 +1174,7 @@ function initHexagonGallery(id, s = null, m = null, borderRadius = null) {
         captionDiv.style.clipPath = 'polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%)';
       }
     }
-    
+
     /* Find the anchor element */
     const anchor = child.querySelector('a');
     if (anchor) {
@@ -1175,23 +1185,23 @@ function initHexagonGallery(id, s = null, m = null, borderRadius = null) {
       anchor.style.borderRadius = finalBorderRadius;
     }
   });
-  
+
   /* Add clearfix element at the end of container */
   const clearfix = document.createElement('div');
   clearfix.style.clear = 'both';
   clearfix.style.height = '0';
   container.appendChild(clearfix);
-  
+
   /* Apply container::before pseudo-element properties via a style element */
   const styleId = `hexagon-gallery-dynamic-styles-${id.replace(/[^a-zA-Z0-9]/g, '_')}`;
   let styleEl = document.getElementById(styleId);
-  
+
   if (!styleEl) {
     styleEl = document.createElement('style');
     styleEl.id = styleId;
     document.head.appendChild(styleEl);
   }
-  
+
   styleEl.textContent = `
     ${containerSelector} {
       overflow: hidden;
@@ -1225,7 +1235,7 @@ function initHexagonGallery(id, s = null, m = null, borderRadius = null) {
       display: flex;
     }
   `;
-  
+
   /* Function to calculate and update height */
   function updateHeight() {
     /* Find the last child's position */
@@ -1233,33 +1243,33 @@ function initHexagonGallery(id, s = null, m = null, borderRadius = null) {
     if (lastChild) {
       const lastRect = lastChild.getBoundingClientRect();
       const containerRect = container.getBoundingClientRect();
-      
+
       /* The bottom of the last element relative to container top */
       /* Add back the negative margin since it's visually extending beyond */
       const actualBottom = lastRect.bottom - containerRect.top + (sNumeric * 0.2885 - mNumeric);
-      
+
       container.style.minHeight = `${actualBottom}px`;
-      
+
       if (outerEl) {
         outerEl.style.setProperty('height', `${actualBottom + 20}px`, 'important');
         outerEl.style.setProperty('overflow', 'visible', 'important');
       }
     }
   }
-  
+
   /* Initial height calculation */
   setTimeout(updateHeight, 100);
-  
+
   /* Debounce function to limit resize calls */
   let resizeTimeout;
   function handleResize() {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(updateHeight, 150);
   }
-  
+
   /* Add resize event listener */
   window.addEventListener('resize', handleResize);
-  
+
   /* Store cleanup function on the gallery element for potential cleanup later */
   gallery._hexagonCleanup = () => {
     window.removeEventListener('resize', handleResize);
@@ -1318,7 +1328,7 @@ function pixgallery_hexagon(el,x){
 
     }
   }
-  
+
   var newValues = '', limitItem = src.length;
   for (let i = 0; i < limitItem; ++i) {
 
@@ -1350,7 +1360,7 @@ function pixgallery_hexagon(el,x){
   }
 
   document.getElementById(el.id).innerHTML = '<div class="pixgallery-gallery pixgallery-hexagon"><div class="pixgallery-hexagon-container">' + newValues + '</div></div>';
-  
+
   if(link[0] === true) {
     var lightbox_options = Object.assign(x.lightbox || {});
     var lightbox = GLightbox(lightbox_options);
@@ -1410,11 +1420,11 @@ function pixgallery_scroll(el,x,fixed){
     } else if(captionValign == "below") {
 
       var temp = '<div class="pixgallery-child pixgallery-scroll-child pixgallery-scroll-child-below" id="pixgallery-{id}" style="grid-template-rows:{h} 1fr;width:{w};"><a href="{url}" class="glightbox" data-gallery="{id}" data-description="{caption2}"><img class="pixgallery-scroll-image pixgallery-scroll-image-below" style="border-radius:{borderRadius} {borderRadius} 0 0;" src="{src}"></a><div class="pixgallery-caption pixgallery-caption-below" style="border-radius:0 0 {borderRadius} {borderRadius};text-align:{captionHalign};">{caption}</div></div>';
-      
+
     } else if(captionValign == "top") {
 
       var temp = '<div class="pixgallery-child pixgallery-scroll-child pixgallery-child-over" id="pixgallery-{id}" style="height:{h};width:{w};"><a href="{url}" class="glightbox" data-gallery="{id}" data-description="{caption2}"><img class="pixgallery-scroll-image pixgallery-scroll-image-over" style="border-radius:{borderRadius};height:{h};width:{w};" src="{src}"></a><div class="pixgallery-caption pixgallery-caption-top" style="border-radius:{borderRadius};text-align:{captionHalign};height:{h};">{caption}</div></div>';
-      
+
     } else if(captionValign == "center") {
 
       var temp = '<div class="pixgallery-child pixgallery-scroll-child pixgallery-child-over" id="pixgallery-{id}" style="height:{h};width:{w};"><a href="{url}" class="glightbox" data-gallery="{id}" data-description="{caption2}"><img class="pixgallery-scroll-image pixgallery-scroll-image-over" style="border-radius:{borderRadius};height:{h};width:{w};" src="{src}"></a><div class="pixgallery-caption pixgallery-caption-center" style="border-radius:{borderRadius};text-align:{captionHalign};height:{h};">{caption}</div></div>';

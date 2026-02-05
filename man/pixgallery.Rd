@@ -17,6 +17,7 @@ pixgallery(
   border_radius = "0px",
   layout = "grid",
   shuffle = FALSE,
+  limit = NULL,
   lightbox = list(),
   width = "100\%",
   height = "100\%",
@@ -47,6 +48,8 @@ pixgallery(
 \item{layout}{A character denoting gallery layout type. Options are "grid", "fixed", "mosaic", "masonry", "justified", "scroll", "elastic", "rhombus" or "hexagon". See details.}
 
 \item{shuffle}{A logical indicating whether images are randomly shuffled.}
+
+\item{limit}{A numeric indicating the maximum number of images to show.}
 
 \item{lightbox}{A list of options to customize the lightbox. See details.}
 
